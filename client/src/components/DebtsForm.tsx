@@ -97,9 +97,13 @@ export function DebtsForm({ debt, onClose, onReload }: DebtsFormProps) {
 
   return (
     <div className="flex flex-col gap-2 max-w-md">
-      <h2 className="text-lg font-semibold">Nueva deuda</h2>
+      <h2 className="text-lg font-semibold">
+        {debt ? "Actualizar deuda" : "Nueva deuda"}
+      </h2>
       <p className="text-sm text-gray-500">
-        Complete los datos para registrar una nueva deuda
+        {debt
+          ? "Complete los datos para actualizar los datos de su deuda"
+          : "Complete los datos para registrar una nueva deuda"}
       </p>
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-4">
@@ -164,7 +168,7 @@ export function DebtsForm({ debt, onClose, onReload }: DebtsFormProps) {
             disabled={formik.isSubmitting}
             className="w-full sm:w-auto bg-black/90 text-white rounded-sm inline-flex justify-center items-center text-sm h-fit px-4 py-2 "
           >
-            Crear deuda
+            {debt ? "Actualizar" : "Crear deuda"}
           </button>
         </div>
       </form>
