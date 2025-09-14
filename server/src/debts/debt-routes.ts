@@ -3,6 +3,7 @@ import {
   getAllDebtByIdController,
   getDebtByIdController,
   registerDebt,
+  updatetDebtController,
 } from "./debt-controller";
 
 // Rutas para las deudas
@@ -15,4 +16,4 @@ debtsRoutes.get("/:id", getDebtByIdController);
 
 debtsRoutes.get("", getAllDebtByIdController);
 
-
+debtsRoutes.put("/:id", updatetDebtController);

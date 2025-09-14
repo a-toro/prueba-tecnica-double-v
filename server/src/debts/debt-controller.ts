@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateDebtDto } from "./debt-dto";
-import { createDebtSchema } from "./debt-schemas";
+import { CreateDebtDto, UpdateDebtDto } from "./debt-dto";
+import { createDebtSchema, updateDebtSchema } from "./debt-schemas";
 import {
   getAllDebtByIdService,
   getDebtByIdService,
   registerNewDebt,
+  updateDebtService,
 } from "./debt-services";
 
 export async function registerDebt(
@@ -97,6 +98,53 @@ export async function getAllDebtByIdController(
     return res.status(200).json({
       debts,
     });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function updatetDebtController(
+  req: Request<{ id: string }, {}, UpdateDebtDto>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const parseRequest = updateDebtSchema.safeParse(req.body);
+
+    if (!parseRequest.success) {
+      const errors = parseRequest.error.issues.map((issue) => ({
+        path: issue.path.join("."),
+        message: issue.message,
+      }));
+      return res.status(400).json({
+        data: null,
+        errors,
+        statusCode: 400,
+      });
+    }
+
+    const debtId = req.params.id;
+
+    if (!debtId.trim()) {
+      return res.status(400).json({
+        error: {
+          message: "El param id es obligatorio",
+        },
+      });
+    }
+
+    const userId = req.user!.id;
+
+    await updateDebtService(
+      {
+        friendName: parseRequest.data.friendName,
+        value: parseRequest.data.value,
+        status: parseRequest.data.status,
+      },
+      userId,
+      debtId
+    );
+    return res.sendStatus(204);
   } catch (error) {
     next(error);
   }

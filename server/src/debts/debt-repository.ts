@@ -39,5 +39,29 @@ export class DebtRepository {
     return result.rows;
   }
 
+  async updateDebt(debt: UpdateDebtDto, userId: string, debtId: string) {
+    const query = `
+        UPDATE debts
+        SET 
+          "friendName" = $1,
+          value = $2,
+          status = $3
+        WHERE
+          "userId" = $4 and id = $5
+        RETURNING id;
+    `;
+
+    const result = await pool.query(query, [
+      debt.friendName,
+      debt.value,
+      debt.status,
+      userId,
+      debtId,
+    ]);
+
+    console.log({ updateDebt: result });
+    return result.rows[0];
+  }
+
   
 }
