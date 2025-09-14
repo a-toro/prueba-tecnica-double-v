@@ -63,5 +63,17 @@ export class DebtRepository {
     return result.rows[0];
   }
 
-  
+  async deleteDebt(userId: string, debtId: string) {
+    const query = `
+        DELETE FROM debts
+        WHERE
+          "userId" = $1 and id = $2
+        RETURNING id;
+    `;
+
+    const result = await pool.query(query, [userId, debtId]);
+
+    console.log({ deleteDebt: result });
+    return result.rows[0];
+  }
 }

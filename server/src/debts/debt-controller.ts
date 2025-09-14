@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { CreateDebtDto, UpdateDebtDto } from "./debt-dto";
 import { createDebtSchema, updateDebtSchema } from "./debt-schemas";
 import {
+  deleteDebtService,
   getAllDebtByIdService,
   getDebtByIdService,
   registerNewDebt,
@@ -145,6 +146,31 @@ export async function updatetDebtController(
       debtId
     );
     return res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteDebtController(
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const debtId = req.params.id;
+
+    if (!debtId.trim()) {
+      return res.status(400).json({
+        error: {
+          message: "El param id es obligatorio",
+        },
+      });
+    }
+
+    const userId = req.user!.id;
+
+    await deleteDebtService(userId, debtId);
+    return res.sendStatus(200);
   } catch (error) {
     next(error);
   }

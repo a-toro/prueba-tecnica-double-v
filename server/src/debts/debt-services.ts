@@ -55,3 +55,13 @@ export async function updateDebtService(
     debtId
   );
 }
+
+export async function deleteDebtService(userId: string, debtId: string) {
+  const findDebt = await getDebtByIdService(userId, debtId);
+
+  if (!findDebt) {
+    throw new Error(`La deuda con id ${debtId} no existe.`);
+  }
+
+  return debtRepository.deleteDebt(userId, debtId);
+}

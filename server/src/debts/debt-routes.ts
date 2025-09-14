@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  deleteDebtController,
   getAllDebtByIdController,
   getDebtByIdController,
   registerDebt,
@@ -17,3 +18,5 @@ debtsRoutes.get("/:id", getDebtByIdController);
 debtsRoutes.get("", getAllDebtByIdController);
 
 debtsRoutes.put("/:id", updatetDebtController);
+
+debtsRoutes.delete("/:id", deleteDebtController);
