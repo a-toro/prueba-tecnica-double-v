@@ -36,9 +36,6 @@ export async function registerDebt(
 
     return res.sendStatus(204);
   } catch (error) {
-    if (error instanceof Error && error.message === "Usuario no disponible") {
-      return res.status(400).json({ error: error.message, statusCode: 400 });
-    }
     next(error);
   }
 }
