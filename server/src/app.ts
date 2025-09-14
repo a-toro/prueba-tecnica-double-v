@@ -3,6 +3,8 @@ import cors from "cors";
 import { authRoutes } from "./auth/auth-routes";
 import { verifyJWT } from "./middlewares/verify-jwt";
 import { debtsRoutes } from "./debts/debt-routes";
+import { notFound } from "./middlewares/not-found";
+import { handleError } from "./middlewares/handle-error";
 
 export const app = express();
 
@@ -14,10 +16,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoutes);
 
 // Rutas protegidas
-app.use(verifyJWT);
-
-app.use("/api/debts", debtsRoutes);
+app.use("/api/debts", verifyJWT, debtsRoutes);
 
 app.get("", (req, res) => {
   res.send("Hello app");
 });
+
+// Not found
+app.use(notFound);
+
+// Handle error
+app.use(handleError);
