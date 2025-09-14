@@ -8,11 +8,17 @@ import { API_BASE_URL } from "../lib/constants";
 
 export default function HomePage() {
   const [open, setOpen] = useState(false);
+  const [filter, setFilter] = useState("all");
   const { isError, isLoading, data, onReload } = useFetch<{
     debts: Debt[];
-  }>(`${API_BASE_URL}/debts`);
+  }>(`${API_BASE_URL}/debts?status=${filter}`);
 
   const onOpenClose = () => setOpen((prev) => !prev);
+
+  const handleFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFilter(event.target.value);
+    if (onReload instanceof Function) onReload();
+  };
 
   if (isLoading) return <div>Cargando datos...</div>;
   if (isError) return <div>Error al cragar los datos</div>;
@@ -35,6 +41,20 @@ export default function HomePage() {
           >
             Registrar deuda
           </button>
+        </div>
+        <div className="border px-4 py-2 rounded-sm border-gray-500">
+          <div className="flex flex-row gap-2 items-center">
+            <span>Filtrar: </span>
+            <select
+              value={filter}
+              onChange={handleFilter}
+              className="px-4 py-2 outline-0"
+            >
+              <option value="all">Todo</option>
+              <option value="pending">Pendientes</option>
+              <option value="paid">Pagadas</option>
+            </select>
+          </div>
         </div>
         <div className="flex flex-col gap-2">
           <h2 className="w-auto text-2xl font-semibold">
