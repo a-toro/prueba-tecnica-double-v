@@ -50,6 +50,34 @@ export default function DebtsTableItem({
     }
   };
 
+  const markAsPaidDebt = async () => {
+    try {
+      const paidDebt = {
+        status: DebtStatus.Paid,
+      };
+      const response = await fetch(`${API_BASE_URL}/debts/${debt.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(paidDebt),
+      });
+
+      if (response.status !== 204) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+      enqueueSnackbar("Deuda actualizada", { variant: "success" });
+      // Refrescar tabla
+      if (onReload instanceof Function) onReload();
+    } catch (error) {
+      let message = "Ah ocurrido un error. Intente nuevamente";
+      if (error instanceof Error) {
+        message = error.message;
+      }
+      enqueueSnackbar(message, { variant: "error" });
+    }
+  };
+
   return (
     <>
       <tr key={debt.id} className="h-10">
@@ -64,7 +92,10 @@ export default function DebtsTableItem({
             <button onClick={onDeleteDebtOpenClose}>Eliminar</button>
             <button onClick={onViewDebtOpenClose}>Ver</button>
             {debt.status === DebtStatus.Pending && (
-              <button onClick={onUpdateDebtOpenClose}>Editar</button>
+              <>
+                <button onClick={onUpdateDebtOpenClose}>Editar</button>
+                <button onClick={markAsPaidDebt}>Pagar</button>
+              </>
             )}
           </div>
         </td>
