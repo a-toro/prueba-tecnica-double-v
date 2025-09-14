@@ -1,7 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { CreateDebtDto } from "./debt-dto";
 import { createDebtSchema } from "./debt-schemas";
-import { getDebtByIdService, registerNewDebt } from "./debt-services";
+import {
+  getAllDebtByIdService,
+  getDebtByIdService,
+  registerNewDebt,
+} from "./debt-services";
 
 export async function registerDebt(
   req: Request<{}, {}, CreateDebtDto>,
@@ -69,6 +73,29 @@ export async function getDebtByIdController(
 
     return res.status(200).json({
       debt,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getAllDebtByIdController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const userId = req.user!.id;
+
+    const debts = await getAllDebtByIdService(userId);
+
+    if (!debts)
+      return res.status(400).json({
+        error: `Error al consultar las deudas registradas`,
+      });
+
+    return res.status(200).json({
+      debts,
     });
   } catch (error) {
     next(error);

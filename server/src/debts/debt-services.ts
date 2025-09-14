@@ -17,3 +17,7 @@ export async function registerNewDebt(debt: CreateDebtDto, userId: string) {
 export async function getDebtByIdService(userId: string, debtId: string) {
   return debtRepository.getDebtById(userId, debtId);
 }
+
+export async function getAllDebtByIdService(userId: string) {
+  return debtRepository.getAllByUserId(userId);
+}

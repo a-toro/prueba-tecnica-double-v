@@ -32,5 +32,12 @@ export class DebtRepository {
     return result.rows[0];
   }
 
+  async getAllByUserId(userId: string): Promise<DebtDto[] | undefined> {
+    const query = `SELECT id, "friendName", value, status FROM debts WHERE "userId" = $1;`;
+    const result = await pool.query(query, [userId]);
+    console.log({ getAllByUserId: result.rows[0] });
+    return result.rows;
+  }
+
   
 }

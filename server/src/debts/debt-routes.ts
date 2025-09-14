@@ -1,5 +1,9 @@
 import express from "express";
-import { getDebtByIdController, registerDebt } from "./debt-controller";
+import {
+  getAllDebtByIdController,
+  getDebtByIdController,
+  registerDebt,
+} from "./debt-controller";
 
 // Rutas para las deudas
 export const debtsRoutes = express.Router();
@@ -8,4 +12,7 @@ export const debtsRoutes = express.Router();
 debtsRoutes.post("", registerDebt);
 
 debtsRoutes.get("/:id", getDebtByIdController);
+
+debtsRoutes.get("", getAllDebtByIdController);
+
 
