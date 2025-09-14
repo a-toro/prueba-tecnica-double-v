@@ -13,3 +13,7 @@ export async function registerNewDebt(debt: CreateDebtDto, userId: string) {
     userId
   );
 }
+
+export async function getDebtByIdService(userId: string, debtId: string) {
+  return debtRepository.getDebtById(userId, debtId);
+}

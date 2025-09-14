@@ -22,5 +22,15 @@ export class DebtRepository {
     return result.rows[0];
   }
 
+  async getDebtById(
+    userId: string,
+    debtId: string
+  ): Promise<DebtDto | undefined> {
+    const query = `SELECT id, "friendName", value, status FROM debts WHERE "userId" = $1 and id = $2;`;
+    const result = await pool.query(query, [userId, debtId]);
+    console.log({ getDebtById: result.rows[0] });
+    return result.rows[0];
+  }
+
   
 }
