@@ -17,14 +17,17 @@ export const createDebtSchema = z.object({
 
 export const updateDebtSchema = z.object({
   friendName: z
-    .string({ error: "El campo friendName es obligatorio" })
+    .string()
     .trim()
-    .min(1, "El campo friendName es obligatorio")
-    .nonempty("El campo friendName es obligatorio"),
+    .min(1, "El campo friendName no puede estar vacío")
+    .optional(),
   value: z
     .number({ error: "El campo value debe ser un valor númerico" })
-    .positive("El campo value debe ser positivo mayor que cero"),
-  status: z.enum([DebtStatus.Pending, DebtStatus.Paid], {
-    error: `El campo status debe de ser del valor ${DebtStatus.Pending} o ${DebtStatus.Paid}`,
-  }),
+    .positive("El campo value debe ser positivo mayor que cero")
+    .optional(),
+  status: z
+    .enum([DebtStatus.Pending, DebtStatus.Paid], {
+      error: `El campo status debe de ser del valor ${DebtStatus.Pending} o ${DebtStatus.Paid}`,
+    })
+    .optional(),
 });
