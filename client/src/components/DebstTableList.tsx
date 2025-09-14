@@ -11,7 +11,15 @@ export default function DebstTableList({
   onReload,
 }: DebstTableListProps) {
   if (debts.length <= 0)
-    return <p>Aún no hay datos disponibles para visualizar</p>;
+    return (
+      <tr>
+        <td colSpan={4}>
+          <p className="py-4 text-gray-500 text-center">
+            Aún no hay datos disponibles para visualizar
+          </p>
+        </td>
+      </tr>
+    );
 
   return debts.map((debt) => (
     <DebtsTableItem key={debt.id} debt={debt} onReload={onReload} />
