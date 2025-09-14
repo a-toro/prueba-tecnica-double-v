@@ -79,7 +79,12 @@ export default function DebtsTableItem({
       </Modal>
       {/* Modal para visualizar deuda */}
       <Modal open={openViewDebt} setOpen={setOpenViewDebt}>
-        Modal de view
+        <DebtsForm
+          onReload={onReload}
+          debt={debt}
+          onClose={onViewDebtOpenClose}
+          isOnlyView={true}
+        />
       </Modal>
       {/* Modal para eliminar deuda */}
       <Modal open={openDeleteDebt} setOpen={setOpenDeleteDebt}>

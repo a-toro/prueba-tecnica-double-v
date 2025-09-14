@@ -9,6 +9,7 @@ interface DebtsFormProps {
   debt?: Debt;
   onClose: () => void;
   onReload?: () => void;
+  isOnlyView?: boolean;
 }
 
 const initialValues = function (debt?: Debt) {
@@ -29,7 +30,12 @@ const validationSchema = function () {
   });
 };
 
-export function DebtsForm({ debt, onClose, onReload }: DebtsFormProps) {
+export function DebtsForm({
+  debt,
+  onClose,
+  onReload,
+  isOnlyView,
+}: DebtsFormProps) {
   const { enqueueSnackbar } = useSnackbar();
   const formik = useFormik({
     initialValues: initialValues(debt),
@@ -96,13 +102,19 @@ export function DebtsForm({ debt, onClose, onReload }: DebtsFormProps) {
   });
 
   return (
-    <div className="flex flex-col gap-2 max-w-md">
+    <div className="flex flex-col gap-2 max-w-md sm:min-w-sm">
       <h2 className="text-lg font-semibold">
-        {debt ? "Actualizar deuda" : "Nueva deuda"}
+        {debt
+          ? isOnlyView
+            ? "Visualizar deuda"
+            : "Actualizar deuda"
+          : "Nueva deuda"}
       </h2>
       <p className="text-sm text-gray-500">
         {debt
-          ? "Complete los datos para actualizar los datos de su deuda"
+          ? isOnlyView
+            ? "Visualize los datos datos de su deuda"
+            : "Complete los datos para actualizar los datos de su deuda"
           : "Complete los datos para registrar una nueva deuda"}
       </p>
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
@@ -116,6 +128,7 @@ export function DebtsForm({ debt, onClose, onReload }: DebtsFormProps) {
               name="name"
               id="name"
               type="text"
+              disabled={isOnlyView}
             />
             {formik.touched.name && formik.errors.name && (
               <p className="text-red-500 text-sm">{formik.errors.name}</p>
@@ -130,6 +143,7 @@ export function DebtsForm({ debt, onClose, onReload }: DebtsFormProps) {
               value={formik.values.amount}
               onChange={formik.handleChange}
               className="w-full border rounded-sm outline-0 p-2 focus:border-blue-600 focus:shadow"
+              disabled={isOnlyView}
             />
             {formik.touched.amount && formik.errors.amount && (
               <p className="text-red-500 text-sm">{formik.errors.amount}</p>
@@ -143,6 +157,7 @@ export function DebtsForm({ debt, onClose, onReload }: DebtsFormProps) {
               value={formik.values.status}
               onChange={formik.handleChange}
               className="border w-full p-2 focus:border-blue-600 focus:shadow outline-0 rounded-sm"
+              disabled={isOnlyView}
             >
               <option value="pending">Pendiente</option>
               <option value="paid">Pagada</option>
@@ -161,15 +176,17 @@ export function DebtsForm({ debt, onClose, onReload }: DebtsFormProps) {
             type="button"
             className="w-full sm:w-auto bg-white border-gray-400 border px-4 py-2 text-sm inline-flex justify-center items-center rounded-sm"
           >
-            Cancelar
+            {isOnlyView ? "Cerrar" : "Cancelar"}
           </button>
-          <button
-            type="submit"
-            disabled={formik.isSubmitting}
-            className="w-full sm:w-auto bg-black/90 text-white rounded-sm inline-flex justify-center items-center text-sm h-fit px-4 py-2 "
-          >
-            {debt ? "Actualizar" : "Crear deuda"}
-          </button>
+          {!isOnlyView && (
+            <button
+              type="submit"
+              disabled={formik.isSubmitting}
+              className="w-full sm:w-auto bg-black/90 text-white rounded-sm inline-flex justify-center items-center text-sm h-fit px-4 py-2 "
+            >
+              {debt ? "Actualizar" : "Crear deuda"}
+            </button>
+          )}
         </div>
       </form>
     </div>
