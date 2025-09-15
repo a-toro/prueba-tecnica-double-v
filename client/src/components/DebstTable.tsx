@@ -8,9 +8,9 @@ interface DebstTableProps {
 
 export default function DebstTable({ debts, onReload }: DebstTableProps) {
   return (
-    <div className=" border w-auto overflow-x-auto border-gray-400 rounded-md p-4 flex flex-col gap-4">
+    <div className=" border w-auto border-gray-400 rounded-md p-4 flex flex-col gap-4">
       <h3 className="text-2xl font-semibold">Lista de deudas</h3>
-      <div className="border border-gray-500 rounded-md p-4">
+      <div className="border border-gray-500 rounded-md p-4 overflow-x-auto">
         <table className="table-auto w-full">
           <thead>
             <tr>
