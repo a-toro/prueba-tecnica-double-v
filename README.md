@@ -2,7 +2,7 @@
 
 Este proyecto es una aplicación **full-stack** compuesta por:
 
-- **Backend**: Node.js + Express + TypeScript + PostgreSQL
+- **Backend**: Node.js + Express + TypeScript + PostgreSQL + Redis
 - **Frontend**: React + TypeScript + Vite + TailwindCSS
 
 ---
