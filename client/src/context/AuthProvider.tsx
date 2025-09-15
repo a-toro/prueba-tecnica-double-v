@@ -7,7 +7,7 @@ import {
   type ReactNode,
   type SetStateAction,
 } from "react";
-import { getAccessToken } from "../api/auth";
+import { getAccessToken, removeAccessToken } from "../api/auth";
 
 export interface AuthState {
   user?: {
@@ -37,6 +37,7 @@ export function AuthProvider({ children }: { readonly children: ReactNode }) {
   }, []);
 
   const logout = function () {
+    removeAccessToken();
     setAuth(null);
   };
 
