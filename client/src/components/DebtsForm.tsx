@@ -5,6 +5,7 @@ import { DebtStatus } from "../types/debt";
 import { useSnackbar } from "notistack";
 import { API_BASE_URL } from "../lib/constants";
 import { useAuth } from "../hooks/useAuth";
+import TextField from "./ui/TextField";
 
 interface DebtsFormProps {
   debt?: Debt;
@@ -123,36 +124,37 @@ export function DebtsForm({
       </p>
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="name">Nombre de la deuda</label>
-            <input
-              value={formik.values.name}
-              onChange={formik.handleChange}
-              className="w-full border rounded-sm outline-0 p-2 focus:border-blue-600 focus:shadow"
-              name="name"
-              id="name"
-              type="text"
-              disabled={isOnlyView}
-            />
-            {formik.touched.name && formik.errors.name && (
-              <p className="text-red-500 text-sm">{formik.errors.name}</p>
-            )}
-          </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="amount">Monto</label>
-            <input
-              id="amount"
-              name="amount"
-              type="number"
-              value={formik.values.amount}
-              onChange={formik.handleChange}
-              className="w-full border rounded-sm outline-0 p-2 focus:border-blue-600 focus:shadow"
-              disabled={isOnlyView}
-            />
-            {formik.touched.amount && formik.errors.amount && (
-              <p className="text-red-500 text-sm">{formik.errors.amount}</p>
-            )}
-          </div>
+          <TextField
+            label="Nombre de la deuda"
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            className="w-full border rounded-sm outline-0 p-2 focus:border-blue-600 focus:shadow"
+            name="name"
+            id="name"
+            type="text"
+            disabled={isOnlyView}
+            error={
+              formik.touched.name && formik.errors.name
+                ? formik.errors.name
+                : undefined
+            }
+          />
+
+          <TextField
+            label="Monto"
+            id="amount"
+            name="amount"
+            type="number"
+            value={formik.values.amount}
+            onChange={formik.handleChange}
+            className="w-full border rounded-sm outline-0 p-2 focus:border-blue-600 focus:shadow"
+            disabled={isOnlyView}
+            error={
+              formik.touched.amount && formik.errors.amount
+                ? formik.errors.amount
+                : undefined
+            }
+          />
           <div className="flex flex-col gap-1">
             <label htmlFor="status">Estado</label>
             <select
