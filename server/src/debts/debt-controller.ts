@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateDebtDto, UpdateDebtDto } from "./debt-dto";
+import { CreateDebtDto, DebtDto, UpdateDebtDto } from "./debt-dto";
 import { createDebtSchema, updateDebtSchema } from "./debt-schemas";
 import {
   deleteDebtService,
@@ -9,6 +9,9 @@ import {
   updateDebtService,
 } from "./debt-services";
 import { QueryDebtFiter } from "../types/query";
+import redisClient from "../lib/redis";
+import { REDIS_CACHE_KEY_START } from "../lib/constants";
+import { invalidCacheKeyRedis } from "../lib/invalidCacheKeyRedis";
 
 export async function registerDebt(
   req: Request<{}, {}, CreateDebtDto>,
@@ -40,6 +43,8 @@ export async function registerDebt(
       },
       userId
     );
+
+    await invalidCacheKeyRedis(userId);
 
     return res.sendStatus(204);
   } catch (error) {
@@ -92,7 +97,22 @@ export async function getAllDebtByIdController(
 
     const query = req.query;
 
-    const debts = await getAllDebtByIdService(userId, query);
+    const queryForKeyCache = new URLSearchParams(
+      query as Record<string, string>
+    );
+
+    const cahcheKey = `${REDIS_CACHE_KEY_START}:${userId}:${queryForKeyCache.toString()}`;
+    console.log({ cahcheKey });
+
+    const cache = await redisClient.get(cahcheKey);
+
+    let debts = undefined;
+    if (cache) {
+      debts = JSON.parse(cache);
+    } else {
+      debts = await getAllDebtByIdService(userId, query);
+      await redisClient.setEx(cahcheKey, 60, JSON.stringify(debts));
+    }
 
     if (!debts)
       return res.status(400).json({
@@ -148,6 +168,9 @@ export async function updatetDebtController(
       userId,
       debtId
     );
+
+    await invalidCacheKeyRedis(userId);
+
     return res.sendStatus(204);
   } catch (error) {
     next(error);
@@ -173,6 +196,8 @@ export async function deleteDebtController(
     const userId = req.user!.id;
 
     await deleteDebtService(userId, debtId);
+
+    await invalidCacheKeyRedis(userId);
     return res.sendStatus(200);
   } catch (error) {
     next(error);

@@ -21,6 +21,7 @@ const envEschema = z.object({
   PG_USER: z.string().min(1, "La variable PG_USER es obligatoria"),
   PG_PASSWORD: z.string().min(1, "La variable PG_PASSWORD es obligatoria"),
   PG_DATABASE: z.string().min(1, "La variable PG_DATABASE es obligatoria"),
+  REDIS_URL: z.string().min(1, "La variable PG_DATABASE es obligatoria"),
 });
 
 const { success, error, data } = envEschema.safeParse(process.env);
@@ -40,6 +41,7 @@ const {
   PG_USER,
   PG_PASSWORD,
   PG_DATABASE,
+  REDIS_URL,
 } = data;
 
 export const EnvConfig = {
@@ -52,6 +54,7 @@ export const EnvConfig = {
   PG_USER,
   PG_PASSWORD,
   PG_DATABASE,
+  REDIS_URL,
 };
 
 console.log({ EnvConfig });
