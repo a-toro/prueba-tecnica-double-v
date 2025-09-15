@@ -41,6 +41,7 @@ export function RegisterForm() {
         });
 
         setAccessToken(userData.accessToken);
+        enqueueSnackbar(`Bienvenido ${userData.data.user.username}`);
       } catch (error) {
         let message = "Ah ocurrido un error. Intente nuevamente";
         if (error instanceof Error) {
