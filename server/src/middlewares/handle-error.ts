@@ -6,6 +6,7 @@ export function handleError(
   res: Response,
   next: NextFunction
 ) {
+  console.log({ error });
   if (error instanceof Error) {
     return res.status(500).json({
       message: error.message,
