@@ -6,6 +6,7 @@ import Modal from "./ui/Modal";
 import { DebtsForm } from "./DebtsForm";
 import { API_BASE_URL } from "../lib/constants";
 import { useSnackbar } from "notistack";
+import { useAuth } from "../hooks/useAuth";
 
 interface DebtsTableItemProps {
   debt: Debt;
@@ -16,7 +17,7 @@ export default function DebtsTableItem({
   onReload,
 }: DebtsTableItemProps) {
   const { enqueueSnackbar } = useSnackbar();
-
+  const { auth } = useAuth();
   const [openUpdateDebt, setOpenUpdateDebt] = useState(false);
   const [openViewDebt, setOpenViewDebt] = useState(false);
   const [openDeleteDebt, setOpenDeleteDebt] = useState(false);
@@ -31,6 +32,7 @@ export default function DebtsTableItem({
         method: "DELETE",
         headers: {
           "Content-type": "application/json",
+          Authorization: `Bearer ${auth?.accessToken}`,
         },
       });
       if (response.status !== 200) {
@@ -59,6 +61,7 @@ export default function DebtsTableItem({
         method: "PUT",
         headers: {
           "Content-type": "application/json",
+          Authorization: `Bearer ${auth?.accessToken}`,
         },
         body: JSON.stringify(paidDebt),
       });

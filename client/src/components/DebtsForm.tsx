@@ -4,6 +4,7 @@ import type { Debt } from "../types/debt";
 import { DebtStatus } from "../types/debt";
 import { useSnackbar } from "notistack";
 import { API_BASE_URL } from "../lib/constants";
+import { useAuth } from "../hooks/useAuth";
 
 interface DebtsFormProps {
   debt?: Debt;
@@ -37,6 +38,7 @@ export function DebtsForm({
   isOnlyView,
 }: DebtsFormProps) {
   const { enqueueSnackbar } = useSnackbar();
+  const { auth } = useAuth();
   const formik = useFormik({
     initialValues: initialValues(debt),
     validationSchema: validationSchema(),
@@ -53,6 +55,7 @@ export function DebtsForm({
             method: "POST",
             headers: {
               "Content-type": "application/json",
+              Authorization: `Bearer ${auth?.accessToken}`,
             },
             body: JSON.stringify(newDebt),
           });
@@ -78,6 +81,7 @@ export function DebtsForm({
             method: "PUT",
             headers: {
               "Content-type": "application/json",
+              Authorization: `Bearer ${auth?.accessToken}`,
             },
             body: JSON.stringify(updateDebt),
           });
