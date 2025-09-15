@@ -18,7 +18,7 @@ export default function Modal({ children, open, setOpen }: ModalProps) {
       >
         <div
           onClick={(e) => e.stopPropagation()}
-          className="relative bg-white flex flex-col items-center min-w-auto max-w-[40%] justify-baseline p-10 rounded-lg"
+          className="relative bg-white flex flex-col items-center min-w-auto justify-baseline p-10 rounded-lg"
         >
           {children}
         </div>
