@@ -1,4 +1,5 @@
 import { DebtStatus } from "../models/debt";
+import { QueryDebtFiter } from "../types/query";
 import { CreateDebtDto, UpdateDebtDto } from "./debt-dto";
 import { DebtRepository } from "./debt-repository";
 
@@ -19,8 +20,11 @@ export async function getDebtByIdService(userId: string, debtId: string) {
   return debtRepository.getDebtById(userId, debtId);
 }
 
-export async function getAllDebtByIdService(userId: string) {
-  return debtRepository.getAllByUserId(userId);
+export async function getAllDebtByIdService(
+  userId: string,
+  filter?: QueryDebtFiter
+) {
+  return debtRepository.getAllByUserId(userId, filter);
 }
 
 export async function updateDebtService(

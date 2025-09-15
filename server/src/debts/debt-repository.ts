@@ -1,5 +1,7 @@
 import { CreateUserDto } from "../auth/auth-dto";
 import { pool } from "../data/db";
+import { DebtStatus } from "../models/debt";
+import { QueryDebtFiter } from "../types/query";
 import { CreateDebtDto, DebtDto, UpdateDebtDto } from "./debt-dto";
 
 export class DebtRepository {
@@ -32,9 +34,23 @@ export class DebtRepository {
     return result.rows[0];
   }
 
-  async getAllByUserId(userId: string): Promise<DebtDto[] | undefined> {
-    const query = `SELECT id, "friendName", value, status FROM debts WHERE "userId" = $1;`;
-    const result = await pool.query(query, [userId]);
+  async getAllByUserId(
+    userId: string,
+    filter?: QueryDebtFiter
+  ): Promise<DebtDto[] | undefined> {
+    let whereStatement = `WHERE "userId" = $1`;
+    const values: any[] = [userId];
+
+    let statusField = "";
+    if (filter?.status === "pending") {
+      whereStatement += ` AND status = $2`;
+      values.push(DebtStatus.Pending);
+    } else if (filter?.status === "paid") {
+      whereStatement += ` AND status = $2`;
+      values.push(DebtStatus.Paid);
+    }
+    const query = `SELECT id, "friendName", value, status FROM debts ${whereStatement};`;
+    const result = await pool.query(query, values);
     console.log({ getAllByUserId: result.rows[0] });
     return result.rows;
   }

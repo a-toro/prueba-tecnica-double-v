@@ -8,6 +8,7 @@ import {
   registerNewDebt,
   updateDebtService,
 } from "./debt-services";
+import { QueryDebtFiter } from "../types/query";
 
 export async function registerDebt(
   req: Request<{}, {}, CreateDebtDto>,
@@ -82,14 +83,16 @@ export async function getDebtByIdController(
 }
 
 export async function getAllDebtByIdController(
-  req: Request,
+  req: Request<{}, {}, {}, QueryDebtFiter>,
   res: Response,
   next: NextFunction
 ) {
   try {
     const userId = req.user!.id;
 
-    const debts = await getAllDebtByIdService(userId);
+    const query = req.query;
+
+    const debts = await getAllDebtByIdService(userId, query);
 
     if (!debts)
       return res.status(400).json({
