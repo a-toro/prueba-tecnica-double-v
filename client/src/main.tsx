@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { closeSnackbar, SnackbarProvider } from "notistack";
+import { AuthProvider } from "./context/AuthProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -22,7 +23,9 @@ createRoot(document.getElementById("root")!).render(
         </span>
       )}
     >
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </SnackbarProvider>
   </StrictMode>
 );
