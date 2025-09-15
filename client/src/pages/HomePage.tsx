@@ -5,8 +5,10 @@ import useFetch from "../hooks/useFetch";
 import DebstTable from "../components/DebstTable";
 import type { Debt } from "../types/debt";
 import { API_BASE_URL } from "../lib/constants";
+import { useAuth } from "../hooks/useAuth";
 
 export default function HomePage() {
+  const { logout } = useAuth();
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("all");
   const { isError, isLoading, data, onReload } = useFetch<{
@@ -28,6 +30,14 @@ export default function HomePage() {
   return (
     <>
       <main className="p-5 w-full flex flex-col gap-5">
+        <div className="flex w-full justify-end p-0 m-0">
+          <button
+            onClick={() => logout()}
+            className="text-sm text-gray-800 hover:opacity-60"
+          >
+            Cerrar sesión
+          </button>
+        </div>
         <div className="flex flex-col sm:flex-row gap-4 justify-between sm:items-center">
           <div>
             <h2 className="text-2xl font-semibold">Dashboard</h2>
