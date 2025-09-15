@@ -7,6 +7,10 @@ import { DebtsForm } from "./DebtsForm";
 import { API_BASE_URL } from "../lib/constants";
 import { useSnackbar } from "notistack";
 import { useAuth } from "../hooks/useAuth";
+import { DeleteIcon } from "./icons/DeleteIcon";
+import { EditIcon } from "./icons/EditIcon";
+import { CurrencyDollarIcon } from "./icons/CurrencyDollarIcon";
+import { EyeIcon } from "./icons/EyeIcon";
 
 interface DebtsTableItemProps {
   debt: Debt;
@@ -92,12 +96,20 @@ export default function DebtsTableItem({
         </td>
         <td>
           <div className="flex gap-1">
-            <button onClick={onDeleteDebtOpenClose}>Eliminar</button>
-            <button onClick={onViewDebtOpenClose}>Ver</button>
+            <button onClick={onDeleteDebtOpenClose}>
+              <DeleteIcon className="text-red-600 hover:opacity-60" />
+            </button>
+            <button onClick={onViewDebtOpenClose}>
+              <EyeIcon className="hover:opacity-60" />
+            </button>
             {debt.status === DebtStatus.Pending && (
               <>
-                <button onClick={onUpdateDebtOpenClose}>Editar</button>
-                <button onClick={markAsPaidDebt}>Pagar</button>
+                <button onClick={onUpdateDebtOpenClose}>
+                  <EditIcon className="text-blue-600 hover:opacity-60" />
+                </button>
+                <button onClick={markAsPaidDebt}>
+                  <CurrencyDollarIcon className="text-green-600 hover:opacity-60" />
+                </button>
               </>
             )}
           </div>
