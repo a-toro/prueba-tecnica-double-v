@@ -13,7 +13,7 @@ export default function DebstTable({ debts, onReload }: DebstTableProps) {
       <div className="border border-gray-500 rounded-md p-4 overflow-x-auto">
         <table className="table-auto w-full">
           <thead>
-            <tr>
+            <tr className="border-b border-gray-600">
               <th className="text-left">Nombre</th>
               <th className="text-left">Monto</th>
               <th className="text-left">Estado</th>
@@ -21,7 +21,9 @@ export default function DebstTable({ debts, onReload }: DebstTableProps) {
               <th>Acciones</th>
             </tr>
           </thead>
-          <tbody>{<DebstTableList debts={debts} onReload={onReload} />}</tbody>
+          <tbody className="[&_tr:last-child]:border-0">
+            {<DebstTableList debts={debts} onReload={onReload} />}
+          </tbody>
         </table>
       </div>
     </div>

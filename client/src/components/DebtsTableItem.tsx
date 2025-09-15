@@ -87,7 +87,10 @@ export default function DebtsTableItem({
 
   return (
     <>
-      <tr key={debt.id} className="h-10">
+      <tr
+        key={debt.id}
+        className="h-12 border-b border-gray-400 hover:bg-gray-300/20"
+      >
         <td>{debt.friendName}</td>
 
         <td>{currencyFormat(debt?.value || 0)}</td>
